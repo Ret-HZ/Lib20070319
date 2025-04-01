@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lib20070319
 {
@@ -68,6 +69,85 @@ namespace Lib20070319
         public object GetValueFromColumn(Bin20070319Column column)
         {
             return GetValueFromColumn(column.Name);
+        }
+
+
+        /// <summary>
+        /// Gets the value for the specified column.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <exception cref="InvalidCastException">The column type cannot be converted to the requested type.</exception>
+        public T GetValueFromColumn<T>(string columnName)
+        {
+            object result = GetValueFromColumn(columnName);
+            try
+            {
+                return (T)result;
+            }
+            catch
+            {
+                Type paramType = typeof(T);
+                throw new InvalidCastException($"Could not cast to the requested type. Expected '{paramType}' but got '{(result == null ? "null" : result.GetType())}' instead.");
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value for the specified column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <exception cref="InvalidCastException">The column type cannot be converted to the requested type.</exception>
+        public T GetValueFromColumn<T>(Bin20070319Column column)
+        {
+            return GetValueFromColumn<T>(column.Name);
+        }
+
+
+        /// <summary>
+        /// Sets the value for the specified column.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <param name="value">The value to write.</param>
+        /// <exception cref="InvalidCastException">The column type does not match the type of the provided object and no cast is possible.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The column does not exist.</exception>
+        public void SetValueFromColumn(string columnName, object value)
+        {
+            Bin20070319Column column = Parent.GetColumn(columnName);
+            if (column != null)
+            {
+                // Try to convert the value to the expected type if they dont match
+                Type columnType = column.GetDataType();
+                if (columnType != value.GetType())
+                {
+                    try
+                    {
+                        value = Convert.ChangeType(value, columnType);
+                    }
+                    catch
+                    {
+                        throw new InvalidCastException($"Could not cast to the column type. Expected '{columnType}' but got '{value.GetType()}' instead.");
+                    }
+                }
+
+                Data[columnName] = value;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(columnName, "The column does not exist.");
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the value for the specified column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value to write.</param>
+        /// <exception cref="InvalidCastException">The column type does not match the type of the provided object and no cast is possible.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The column does not exist.</exception>
+        public void SetValueFromColumn(Bin20070319Column column, object value)
+        {
+            SetValueFromColumn(column.Name, value);
         }
     }
 }
