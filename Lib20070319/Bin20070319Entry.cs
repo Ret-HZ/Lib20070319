@@ -17,6 +17,11 @@ namespace Lib20070319
         /// </summary>
         internal Dictionary<string, object> Data;
 
+        /// <summary>
+        /// <see cref="Bin20070319"/> object this entry belongs to.
+        /// </summary>
+        internal Bin20070319 Parent { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Bin20070319Entry"/> class.
@@ -24,6 +29,16 @@ namespace Lib20070319
         internal Bin20070319Entry()
         {
             Data = new Dictionary<string, object>();
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Bin20070319Entry"/> class.
+        /// </summary>
+        /// <param name="parent">The <see cref="Bin20070319"/> object this entry belongs to.</param>
+        internal Bin20070319Entry(Bin20070319 parent) : this()
+        {
+            Parent = parent;
         }
 
 
