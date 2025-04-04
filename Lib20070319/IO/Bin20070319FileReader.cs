@@ -62,7 +62,6 @@ namespace Lib20070319.IO
             for (int i = 0; i < entryCount; i++)
             {
                 Bin20070319Entry entry = new Bin20070319Entry(bin);
-                entry.ID = bin.Entries.Count;
                 bin.Entries.Add(entry);
             }
 

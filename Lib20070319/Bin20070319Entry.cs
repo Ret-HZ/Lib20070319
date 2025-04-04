@@ -11,7 +11,20 @@ namespace Lib20070319
         /// <summary>
         /// Entry ID.
         /// </summary>
-        public int ID { get; internal set; }
+        public int ID
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    return Parent.Entries.IndexOf(this);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
 
         /// <summary>
         /// Entry data per column. (ColumnName : Data)
