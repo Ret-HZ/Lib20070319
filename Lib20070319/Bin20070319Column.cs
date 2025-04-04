@@ -66,5 +66,34 @@ namespace Lib20070319
                 _ => null
             };
         }
+
+
+        /// <summary>
+        /// Gets the default C# value for this column's data type.
+        /// </summary>
+        /// <returns>An object corresponding to the column's data type.</returns>
+        public object GetDefaultValue()
+        {
+            return InternalDataType switch
+            {
+                DataType.String => string.Empty,
+                DataType.String_tbl => string.Empty,
+                DataType.String_idx => string.Empty,
+                DataType.Value => (int)0,
+                DataType.Value_tbl => (int)0,
+                DataType.Value_idx => null,
+                DataType.Special_scenariocategory => (int)-1,
+                DataType.Special_scenariostatus => null,
+                DataType.Stageid => string.Empty,
+                DataType.Special_scenariocompare => new ScenarioCompare(),
+                DataType.Special_value => (int)0,
+                DataType.Itemid => (int)0,
+                // DataType.Comment => string.Empty,
+                DataType.BGM_ID => new BGM_ID(),
+                DataType.USE_COUNTER => (int)0,
+                DataType.ENTITY_UID => (int)-1,
+                _ => null
+            };
+        }
     }
 }
