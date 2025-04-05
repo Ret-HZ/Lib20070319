@@ -44,7 +44,7 @@ namespace Lib20070319.IO
             for (int i = 0; i < columnCount; i++)
             {
                 long baseOffset = reader.BaseStream.Position;
-                Bin20070319Column column = new Bin20070319Column();
+                Bin20070319Column column = new Bin20070319Column(bin);
                 column.Name = reader.ReadStringNullTerminated();
                 reader.BaseStream.Seek(baseOffset + 0x30);
                 int columnDataTypeID = reader.ReadInt32(true);

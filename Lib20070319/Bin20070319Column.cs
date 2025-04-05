@@ -29,13 +29,19 @@ namespace Lib20070319
         /// </summary>
         internal int Size { get; set; }
 
+        /// <summary>
+        /// <see cref="Bin20070319"/> object this column belongs to.
+        /// </summary>
+        internal Bin20070319 Parent { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Bin20070319Column"/> class.
         /// </summary>
-        internal Bin20070319Column()
+        /// <param name="parent">The <see cref="Bin20070319"/> object this column belongs to.</param>
+        internal Bin20070319Column(Bin20070319 parent)
         {
-
+            Parent = parent;
         }
 
 

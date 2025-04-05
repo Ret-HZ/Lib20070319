@@ -127,7 +127,7 @@ namespace Lib20070319
         {
             if (GetColumn(name) == null)
             {
-                Bin20070319Column column = new Bin20070319Column();
+                Bin20070319Column column = new Bin20070319Column(this);
                 column.Name = name;
                 column.InternalDataType = dataType;
                 Columns.Add(column);
