@@ -101,5 +101,62 @@ namespace Lib20070319
                 _ => null
             };
         }
+
+
+        /// <summary>
+        /// Changes this column's data type.
+        /// </summary>
+        /// <param name="dataType">The new data type.</param>
+        /// <remarks>Any existing values that can not be converted to the new data type will be reset to their default instead.</remarks>
+        public void ChangeDataType(DataType dataType)
+        {
+            Type oldType = GetDataType();
+            InternalDataType = dataType;
+            Type newType = GetDataType();
+
+            if (oldType != newType)
+            {
+                foreach (Bin20070319Entry entry in Parent.Entries)
+                {
+                    object value = entry.GetValueFromColumn(Name);
+
+                    try
+                    {
+                        value = Convert.ChangeType(value, newType);
+                    }
+                    catch
+                    {
+                        value = GetDefaultValue();
+                    }
+
+                    entry.Data[Name] = value;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Renames the column.
+        /// </summary>
+        /// <param name="newName">The new column name.</param>
+        public void Rename(string newName)
+        {
+            string oldName = Name;
+            Name = newName;
+
+            foreach (Bin20070319Entry entry in Parent.Entries)
+            {
+                if (entry.Data.ContainsKey(oldName))
+                {
+                    object data = entry.Data[oldName];
+                    entry.Data.Add(newName, data);
+                    entry.Data.Remove(oldName);
+                }
+                else
+                {
+                    entry.Data.Add(newName, GetDefaultValue());
+                }
+            }
+        }
     }
 }
