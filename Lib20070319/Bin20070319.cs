@@ -17,7 +17,7 @@ namespace Lib20070319
         /// <summary>
         /// Initializes a new instance of the <see cref="Bin20070319"/> class.
         /// </summary>
-        internal Bin20070319()
+        public Bin20070319()
         {
             Entries = new List<Bin20070319Entry>();
             Columns = new List<Bin20070319Column>();
