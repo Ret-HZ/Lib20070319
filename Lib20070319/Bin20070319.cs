@@ -56,7 +56,7 @@ namespace Lib20070319
         /// Returns a specific column.
         /// </summary>
         /// <param name="name">The column name.</param>
-        /// <returns>A <see cref="Bin20070319Column"/>.</returns>
+        /// <returns>A <see cref="Bin20070319Column"/> or <see langword="null"/> if no column is found.</returns>
         public Bin20070319Column GetColumn(string name)
         {
             foreach (Bin20070319Column column in Columns)
@@ -77,6 +77,41 @@ namespace Lib20070319
         public IReadOnlyList<Bin20070319Column> GetColumns()
         {
             return Columns.AsReadOnly();
+        }
+
+
+        /// <summary>
+        /// Creates and adds a new entry to the <see cref="Bin20070319"/>.
+        /// </summary>
+        /// <returns>The newly created <see cref="Bin20070319Entry"/>.</returns>
+        public Bin20070319Entry AddEntry()
+        {
+            Bin20070319Entry entry = new Bin20070319Entry(this);
+            foreach(Bin20070319Column column in Columns)
+            {
+                entry.Data.Add(column.Name, column.GetDefaultValue());
+            }
+            Entries.Add(entry);
+            return entry;
+        }
+
+
+        /// <summary>
+        /// Removes the <see cref="Bin20070319Entry"/> matching the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the entry to remove.</param>
+        /// <returns>A <see cref="bool"/> indicating if the operation completed successfully.</returns>
+        public bool RemoveEntry(int id)
+        {
+            if (Entries.Count > id)
+            {
+                Entries.RemoveAt(id);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
