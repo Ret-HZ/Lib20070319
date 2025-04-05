@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib20070319.Enum;
+using System;
 using System.Collections.Generic;
 
 namespace Lib20070319
@@ -111,6 +112,61 @@ namespace Lib20070319
             else
             {
                 return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Creates and adds a new column to the <see cref="Bin20070319"/>.
+        /// </summary>
+        /// <param name="name">The column name.</param>
+        /// <param name="dataType">The column data type.</param>
+        /// <returns>The newly created <see cref="Bin20070319Column"/>.</returns>
+        /// <exception cref="Exception">A column with the specified name already exists.</exception>
+        public Bin20070319Column AddColumn(string name, DataType dataType)
+        {
+            if (GetColumn(name) == null)
+            {
+                Bin20070319Column column = new Bin20070319Column();
+                column.Name = name;
+                column.InternalDataType = dataType;
+                Columns.Add(column);
+
+                foreach (Bin20070319Entry entry in Entries)
+                {
+                    entry.Data[column.Name] = column.GetDefaultValue();
+                }
+
+                return column;
+            }
+            else
+            {
+                throw new Exception($"A column with the name '{name}' already exists.");
+            }
+        }
+
+
+        /// <summary>
+        /// Removes the <see cref="Bin20070319Column"/> matching the specified name.
+        /// </summary>
+        /// <param name="name">The name of the column to remove.</param>
+        /// <returns>A <see cref="bool"/> indicating if the operation completed successfully.</returns>
+        public bool RemoveColumn(string name)
+        {
+            Bin20070319Column column = GetColumn(name);
+            if (column == null)
+            {
+                return false;
+            }
+            else
+            {
+                foreach (Bin20070319Entry entry in Entries)
+                {
+                    entry.Data.Remove(column.Name);
+                }
+
+                Columns.Remove(column);
+                return true;
             }
         }
     }
