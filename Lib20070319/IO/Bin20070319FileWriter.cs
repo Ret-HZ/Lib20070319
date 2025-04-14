@@ -339,10 +339,18 @@ namespace Lib20070319.IO
             }
             writer.Write(scenarioStatus.ScenarioCategory, true);
             writer.Write(scenarioStatus.ScenarioState, true);
-            writer.Write((int)scenarioStatus.NextCondition.Condition, true);
-            if (scenarioStatus.NextCondition.ScenarioStatus != null)
+            if (scenarioStatus.NextCondition.ScenarioStatus != null && scenarioStatus.NextCondition.Condition != Condition.NONE)
             {
+                // Handle broken conditions. Do not write the condition ID if there is none.
+                if (scenarioStatus.NextCondition.Condition != Condition.ERROR)
+                {
+                    writer.Write((int)scenarioStatus.NextCondition.Condition, true);
+                }
                 WriteScenarioStatus(writer, scenarioStatus.NextCondition.ScenarioStatus);
+            }
+            else
+            {
+                writer.Write((int)Condition.NONE, true);
             }
         }
     }

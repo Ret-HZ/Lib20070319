@@ -308,6 +308,12 @@ namespace Lib20070319.IO
             Condition nextCondition = (Condition)reader.ReadInt32(true);
             if (nextCondition != Condition.NONE)
             {
+                // Handle broken conditions.
+                if (nextCondition != Condition.AND && nextCondition != Condition.OR)
+                {
+                    reader.BaseStream.Seek(-0x4, SeekOrigin.Current);
+                    nextCondition = Condition.ERROR;
+                }
                 scenarioStatus.NextCondition = (nextCondition, ReadScenarioStatus(reader));
             }
             return scenarioStatus;
