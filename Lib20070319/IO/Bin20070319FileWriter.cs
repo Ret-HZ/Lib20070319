@@ -333,11 +333,12 @@ namespace Lib20070319.IO
         /// <param name="scenarioStatus">The <see cref="ScenarioStatus"/> to write.</param>
         private static void WriteScenarioStatus(BinaryWriter writer, ScenarioStatus scenarioStatus)
         {
+            short scenarioCategory = scenarioStatus.ScenarioCategory;
             if (scenarioStatus.ExpectedResult)
             {
-                scenarioStatus.ScenarioCategory |= unchecked((short)0x8000);
+                scenarioCategory |= unchecked((short)0x8000);
             }
-            writer.Write(scenarioStatus.ScenarioCategory, true);
+            writer.Write(scenarioCategory, true);
             writer.Write(scenarioStatus.ScenarioState, true);
             if (scenarioStatus.NextCondition.ScenarioStatus != null && scenarioStatus.NextCondition.Condition != Condition.NONE)
             {
