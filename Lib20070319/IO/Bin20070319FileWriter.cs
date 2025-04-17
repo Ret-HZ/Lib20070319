@@ -220,8 +220,8 @@ namespace Lib20070319.IO
 
                     case DataType.Comment:
                         {
-                            //TODO: Not used in any file (?)
-                            throw new NotImplementedException("The 'Comment' data type is not implemented.");
+                            // The "Comment" data type is not used in any file.
+                            break;
                         }
 
                     case DataType.BGM_ID:
