@@ -1,9 +1,11 @@
-﻿namespace Lib20070319.Types
+﻿using System;
+
+namespace Lib20070319.Types
 {
     /// <summary>
     /// <b>special_scenariocompare</b> data type for the 20070319 file format.
     /// </summary>
-    public class ScenarioCompare
+    public class ScenarioCompare : IEquatable<ScenarioCompare>
     {
         /// <summary>
         /// The scenario category index.
@@ -35,6 +37,32 @@
         {
             ScenarioCategory = scenarioCategory;
             ScenarioState = scenarioState;
+        }
+
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ScenarioCompare);
+        }
+
+
+        /// <inheritdoc/>
+        public bool Equals(ScenarioCompare other)
+        {
+            return other is not null &&
+                   ScenarioCategory == other.ScenarioCategory &&
+                   ScenarioState == other.ScenarioState;
+        }
+
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            int hashCode = 1295798939;
+            hashCode = hashCode * -1521134295 + ScenarioCategory.GetHashCode();
+            hashCode = hashCode * -1521134295 + ScenarioState.GetHashCode();
+            return hashCode;
         }
     }
 }
