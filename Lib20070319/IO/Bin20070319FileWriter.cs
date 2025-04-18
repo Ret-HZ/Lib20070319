@@ -43,6 +43,7 @@ namespace Lib20070319.IO
                 switch (column.InternalDataType)
                 {
                     case DataType.String:
+                    case DataType.Value:
                         {
                             foreach (Bin20070319Entry entry in bin20070319.Entries)
                             {
@@ -54,6 +55,7 @@ namespace Lib20070319.IO
                         }
 
                     case DataType.String_tbl:
+                    case DataType.Value_tbl:
                         {
                             List<string> strings = new List<string>();
                             List<byte> indices = new List<byte>();
@@ -76,6 +78,7 @@ namespace Lib20070319.IO
                         }
 
                     case DataType.String_idx:
+                    case DataType.Value_idx:
                         {
                             column.AdditionalDataCount = 0;
                             foreach (Bin20070319Entry entry in bin20070319.Entries)
@@ -85,58 +88,6 @@ namespace Lib20070319.IO
                                 {
                                     writer.Write((short)entry.ID, true);
                                     writer.Write((string)value, true);
-                                    column.AdditionalDataCount += 1;
-                                }
-                            }
-                            break;
-                        }
-
-                    case DataType.Value:
-                        {
-                            foreach (Bin20070319Entry entry in bin20070319.Entries)
-                            {
-                                int value = (int)entry.GetValueFromColumn(column);
-                                string valueString = value.ToString();
-                                writer.Write(valueString, true);
-                            }
-                            column.AdditionalDataCount = bin20070319.Entries.Count;
-                            break;
-                        }
-
-                    case DataType.Value_tbl:
-                        {
-                            List<string> strings = new List<string>();
-                            List<byte> indices = new List<byte>();
-                            foreach (Bin20070319Entry entry in bin20070319.Entries)
-                            {
-                                int value = (int)entry.GetValueFromColumn(column);
-                                string valueString = value.ToString();
-                                if (!strings.Contains(valueString))
-                                {
-                                    strings.Add(valueString);
-                                    writer.Write(valueString, true);
-                                }
-                                indices.Add((byte)strings.IndexOf(valueString));
-                            }
-                            foreach (byte index in indices)
-                            {
-                                writer.Write(index);
-                            }
-                            column.AdditionalDataCount = strings.Count;
-                            break;
-                        }
-
-                    case DataType.Value_idx:
-                        {
-                            column.AdditionalDataCount = 0;
-                            foreach (Bin20070319Entry entry in bin20070319.Entries)
-                            {
-                                object value = entry.GetValueFromColumn(column);
-                                if (value != null)
-                                {
-                                    string valueString = value.ToString();
-                                    writer.Write((short)entry.ID, true);
-                                    writer.Write(valueString, true);
                                     column.AdditionalDataCount += 1;
                                 }
                             }

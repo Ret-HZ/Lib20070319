@@ -71,6 +71,7 @@ namespace Lib20070319.IO
                 switch (column.InternalDataType)
                 {
                     case DataType.String:
+                    case DataType.Value:
                         {
                             foreach (Bin20070319Entry entry in bin.Entries)
                             {
@@ -81,6 +82,7 @@ namespace Lib20070319.IO
                         }
 
                     case DataType.String_tbl:
+                    case DataType.Value_tbl:
                         {
                             List<string> stringTable = new List<string>();
                             for (int i = 0; i < column.AdditionalDataCount; i++)
@@ -96,47 +98,12 @@ namespace Lib20070319.IO
                         }
 
                     case DataType.String_idx:
-                        {
-                            for (int i = 0; i < column.AdditionalDataCount; i++)
-                            {
-                                int id = reader.ReadInt16(true);
-                                string value = reader.ReadStringNullTerminated();
-                                bin.Entries[id].Data.Add(column.Name, value);
-                            }
-                            break;
-                        }
-
-                    case DataType.Value:
-                        {
-                            foreach (Bin20070319Entry entry in bin.Entries)
-                            {
-                                int value = int.Parse(reader.ReadStringNullTerminated());
-                                entry.Data.Add(column.Name, value);
-                            }
-                            break;
-                        }
-
-                    case DataType.Value_tbl:
-                        {
-                            List<int> valueTable = new List<int>();
-                            for (int i = 0; i < column.AdditionalDataCount; i++)
-                            {
-                                valueTable.Add(int.Parse(reader.ReadStringNullTerminated()));
-                            }
-                            foreach (Bin20070319Entry entry in bin.Entries)
-                            {
-                                byte valueIndex = reader.ReadByte();
-                                entry.Data.Add(column.Name, valueTable[valueIndex]);
-                            }
-                            break;
-                        }
-
                     case DataType.Value_idx:
                         {
                             for (int i = 0; i < column.AdditionalDataCount; i++)
                             {
                                 int id = reader.ReadInt16(true);
-                                int value = int.Parse(reader.ReadStringNullTerminated());
+                                string value = reader.ReadStringNullTerminated();
                                 bin.Entries[id].Data.Add(column.Name, value);
                             }
                             break;
